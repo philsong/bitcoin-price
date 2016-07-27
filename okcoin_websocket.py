@@ -5,28 +5,43 @@ import json
 import hashlib
 import zlib
 import base64
+import tentacle
+import logging
+import utils
 
 def on_open(self):
+    logging.debug('[Connected]')
     #subscribe okcoin.com spot depth
-    self.send("{'event':'addChannel','channel':'ok_sub_spotcny_btc_depth_20','binary':'true'}")
+    self.send("{'event':'addChannel','channel':'ok_sub_spotcny_btc_depth_60','binary':'true'}")
     
 def on_message(self,evt):
     data = inflate(evt) #data decompress
-    print (data)
+
+    data = json.loads(data)
+    try:
+        depth = data[0]['data']
+    except Exception, e:
+        return
+
+    depth = utils.sort_depth(depth)
+    depth['timestamp'] = int(data[0]['data']['timestamp'])
+    depth['market'] = 'okcoin'
+
+    utils.pub_depth('depth_okcoin', depth)
 
 def inflate(data):
     decompress = zlib.decompressobj(
-            -zlib.MAX_WBITS  # see above
+        -zlib.MAX_WBITS  # see above
     )
     inflated = decompress.decompress(data)
     inflated += decompress.flush()
     return inflated
 
 def on_error(self,evt):
-    print (evt)
+    logging.debug ('error: %s', evt)
 
 def on_close(self):
-    print ('DISCONNECT')
+    logging.debug ('DISCONNECT')
 
 if __name__ == "__main__":
     url = "wss://real.okcoin.cn:10440/websocket/okcoinapi"     

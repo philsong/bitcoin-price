@@ -69,5 +69,6 @@ project.xcworkspace
 
 tentacle.py
 settings.py
+uni_socketio*
 
 
