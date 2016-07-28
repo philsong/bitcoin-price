@@ -8,9 +8,11 @@ import settings
 logging.basicConfig(level=logging.INFO)
 
 def on_message(data):
-    message = json.dumps(data)
-    logging.info('on_message:')
-    print(message)
+    if data[0] != '2':
+        return
+
+    data = json.loads(data[1:])
+    logging.info(data)
 
 def on_connect():
     logging.debug('[Connected]')
@@ -18,7 +20,7 @@ def on_connect():
     socketIO.emit('land', {'app': 'haobtcnotify', 'events':['depth_okcoin','depth_huobi','depth_haobtc']});
 
 if __name__ == "__main__":
-    with SocketIO(settings.HAOBTC_HOST, port=settings.HAOBTC_PORT, Namespace=LoggingNamespace) as socketIO:
+    with SocketIO(settings.HAOBTC_HOST, port=settings.HAOBTC_PORT) as socketIO:
 
         socketIO.on('connect', on_connect)
         socketIO.on('message', on_message)

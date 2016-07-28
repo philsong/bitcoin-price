@@ -3,7 +3,6 @@ import sys
 import json
 import logging
 from socketIO_client_0_5_6 import SocketIO, LoggingNamespace
-import tentacle
 import utils
 
 logging.basicConfig(level=logging.INFO)

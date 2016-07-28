@@ -25,7 +25,7 @@ def pub_depth(event, depth):
     logging.debug(depth)
 
     try:
-    	import tentacle
+        import tentacle
         r = tentacle.push_message({'event': event, 'data': depth})
     except:
         logging.debug('error on pushing exchange orderbook', exc_info=True)
