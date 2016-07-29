@@ -8,6 +8,7 @@ import utils
 logging.basicConfig(level=logging.INFO)
 
 def on_message(data):
+    data = data.decode('utf8')
     if data[0] != '2':
         return
 

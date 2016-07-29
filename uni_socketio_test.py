@@ -8,11 +8,15 @@ import settings
 logging.basicConfig(level=logging.INFO)
 
 def on_message(data):
+    data = data.decode('utf8')
     if data[0] != '2':
         return
 
     data = json.loads(data[1:])
-    logging.info(data)
+    depth = data[1]
+
+    logging.info("depth coming: %s", depth['market'])
+    logging.debug(depth)
 
 def on_connect():
     logging.debug('[Connected]')
