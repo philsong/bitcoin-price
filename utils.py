@@ -1,4 +1,5 @@
 import logging
+import settings
 
 def sort(l, reverse=False):
     l.sort(key=lambda x: float(x[0]), reverse=reverse)
@@ -24,8 +25,16 @@ def format_depth(depth):
 def pub_depth(event, depth):
     logging.debug(depth)
 
+    if settings.USE_ZMQ:
+        import push
+        push = push.Push()
+        r = push.notify_obj({'event': event, 'data': depth})
+        return
+
     try:
         import tentacle
         r = tentacle.push_message({'event': event, 'data': depth})
     except:
         logging.debug('error on pushing exchange orderbook', exc_info=True)
+    
+    return

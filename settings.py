@@ -1,3 +1,8 @@
+ZMQ_HOST = "127.0.0.1"
+ZMQ_PORT = 18031
+
+USE_ZMQ=True
+
 TENTACLE_TOKEN_SALT = 'xxxxx'
 
 HAOBTC_HOST = 'http://app.haobtc.com'

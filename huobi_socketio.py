@@ -35,7 +35,7 @@ def on_message(data):
     depth['timestamp'] = (payload['time'])
     depth['market'] = 'huobi'
 
-    utils.pub_depth('depth_huobi', depth)
+    utils.pub_depth('huobi_depth', depth)
 
 def on_connect():
     logging.debug('[Connected]')

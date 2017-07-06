@@ -30,7 +30,7 @@ def on_message(data):
     depth['timestamp'] = int(1000*time.time())
     depth['market'] = 'haobtc'
 
-    utils.pub_depth('depth_haobtc', depth)
+    utils.pub_depth('haobtc_depth', depth)
 
 def on_connect():
     logging.debug('[Connected]')

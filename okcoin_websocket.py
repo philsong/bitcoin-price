@@ -9,17 +9,24 @@ import tentacle
 import logging
 import utils
 
+sub_channel_name = 'ok_sub_spotcny_btc_depth_60'
+
 def on_open(self):
     logging.debug('[Connected]')
     #subscribe okcoin.com spot depth
-    self.send("{'event':'addChannel','channel':'ok_sub_spotcny_btc_depth_60','binary':'true'}")
+    self.send("{'event':'addChannel','channel':'%s','binary':'0'}" % sub_channel_name)
     
 def on_message(self,evt):
-    data = inflate(evt) #data decompress
+    # data = inflate(evt) #data decompress
+    # print(evt)
+    data = evt
 
     data = json.loads(data)
     try:
-        depth = data[0]['data']
+        if data[0]['channel'] == 'addChannel':
+            return
+        if data[0]['channel'] == sub_channel_name:
+            depth = data[0]['data']
     except Exception, e:
         return
 
@@ -27,7 +34,7 @@ def on_message(self,evt):
     depth['timestamp'] = int(data[0]['data']['timestamp'])
     depth['market'] = 'okcoin'
 
-    utils.pub_depth('depth_okcoin', depth)
+    utils.pub_depth('okcoin_depth', depth)
 
 def inflate(data):
     decompress = zlib.decompressobj(
@@ -46,7 +53,7 @@ def on_close(self):
 if __name__ == "__main__":
     url = "wss://real.okcoin.cn:10440/websocket/okcoinapi"     
 
-    websocket.enableTrace(False)
+    websocket.enableTrace(True)
     if len(sys.argv) < 2:
         host = url
     else:

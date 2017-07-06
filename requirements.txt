@@ -1,3 +1,4 @@
 websocket-client==0.37.0
 socketIO-client
+zmq
 # 注意socketIO_client版本是用的0.5.6,对应socket.io的0.9.16版本的,最新版本的socket.io有兼容问题,连接不上推送服务器.
