@@ -25,7 +25,7 @@ def on_message(data):
     for ask in data[1]['ask']:
         ask = [ask['price'],ask['remainsize']]
         depth['asks'].append(ask)
-    
+
     depth = utils.sort_depth(depth)
     depth['timestamp'] = int(1000*time.time())
     depth['market'] = 'haobtc'
@@ -38,10 +38,10 @@ def on_connect():
     socketIO.emit('land', {'app': 'haobtcnotify', 'events':['orderbook']});
 
 if __name__ == "__main__":
-    with SocketIO('http://app.haobtc.com') as socketIO:
+    with SocketIO('http://ws.bixin.com') as socketIO:
 
         socketIO.on('connect', on_connect)
         socketIO.on('message', on_message)
 
         socketIO.wait()
-    
+
